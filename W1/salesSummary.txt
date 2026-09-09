@@ -1,0 +1,7 @@
+Sales Summary
+----------------------------
+ Total Sales: $ 373,55
+
+ Details:
+  stores/201/sales.json: $ 223,45
+  stores/202/sales.json: $ 150,10

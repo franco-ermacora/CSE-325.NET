@@ -1,0 +1,17 @@
+/home/franco/Documentos/W01-EntregaFinal/ManejoDeArchivos/bin/Debug/net8.0/ManejoDeArchivos
+/home/franco/Documentos/W01-EntregaFinal/ManejoDeArchivos/bin/Debug/net8.0/ManejoDeArchivos.deps.json
+/home/franco/Documentos/W01-EntregaFinal/ManejoDeArchivos/bin/Debug/net8.0/ManejoDeArchivos.runtimeconfig.json
+/home/franco/Documentos/W01-EntregaFinal/ManejoDeArchivos/bin/Debug/net8.0/ManejoDeArchivos.dll
+/home/franco/Documentos/W01-EntregaFinal/ManejoDeArchivos/bin/Debug/net8.0/ManejoDeArchivos.pdb
+/home/franco/Documentos/W01-EntregaFinal/ManejoDeArchivos/bin/Debug/net8.0/Newtonsoft.Json.dll
+/home/franco/Documentos/W01-EntregaFinal/ManejoDeArchivos/obj/Debug/net8.0/ManejoDeArchivos.csproj.AssemblyReference.cache
+/home/franco/Documentos/W01-EntregaFinal/ManejoDeArchivos/obj/Debug/net8.0/ManejoDeArchivos.GeneratedMSBuildEditorConfig.editorconfig
+/home/franco/Documentos/W01-EntregaFinal/ManejoDeArchivos/obj/Debug/net8.0/ManejoDeArchivos.AssemblyInfoInputs.cache
+/home/franco/Documentos/W01-EntregaFinal/ManejoDeArchivos/obj/Debug/net8.0/ManejoDeArchivos.AssemblyInfo.cs
+/home/franco/Documentos/W01-EntregaFinal/ManejoDeArchivos/obj/Debug/net8.0/ManejoDeArchivos.csproj.CoreCompileInputs.cache
+/home/franco/Documentos/W01-EntregaFinal/ManejoDeArchivos/obj/Debug/net8.0/ManejoDeArchivos.csproj.CopyComplete
+/home/franco/Documentos/W01-EntregaFinal/ManejoDeArchivos/obj/Debug/net8.0/ManejoDeArchivos.dll
+/home/franco/Documentos/W01-EntregaFinal/ManejoDeArchivos/obj/Debug/net8.0/refint/ManejoDeArchivos.dll
+/home/franco/Documentos/W01-EntregaFinal/ManejoDeArchivos/obj/Debug/net8.0/ManejoDeArchivos.pdb
+/home/franco/Documentos/W01-EntregaFinal/ManejoDeArchivos/obj/Debug/net8.0/ManejoDeArchivos.genruntimeconfig.cache
+/home/franco/Documentos/W01-EntregaFinal/ManejoDeArchivos/obj/Debug/net8.0/ref/ManejoDeArchivos.dll

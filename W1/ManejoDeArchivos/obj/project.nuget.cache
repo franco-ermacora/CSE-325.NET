@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dgSpecHash": "8pV1cPm3x3s7iX3dH7P08iStxmmJeLwJXX7+N0MnHk6DBsBLBznB1MScfYlIXpoKuUaXvg9BvWb4oZc1nX9J/w==",
+  "success": true,
+  "projectFilePath": "/home/franco/Documentos/CSE325-NET-Development/W1/ManejoDeArchivos/ManejoDeArchivos.csproj",
+  "expectedPackageFiles": [
+    "/home/franco/.nuget/packages/newtonsoft.json/13.0.4/newtonsoft.json.13.0.4.nupkg.sha512"
+  ],
+  "logs": []
+}
