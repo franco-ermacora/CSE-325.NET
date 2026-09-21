@@ -1,0 +1,227 @@
+@page "/mediavault"
+@using Microsoft.AspNetCore.Authorization
+@using Microsoft.AspNetCore.Components.Authorization
+@using Microsoft.EntityFrameworkCore
+@using MediaVault.Data
+@attribute [Authorize]
+@inject ApplicationDbContext DbContext
+@inject AuthenticationStateProvider AuthenticationStateProvider
+
+<PageTitle>Media Vault - Mis Libros y Películas</PageTitle>
+
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2>📚 Media Vault</h2>
+        <span class="badge bg-primary fs-6">Colección Personal</span>
+    </div>
+
+    <!-- Formularios y Métricas / Agregar Nuevo Item -->
+    <div class="card mb-4 shadow-sm">
+        <div class="card-header bg-dark text-white">
+            <h5 class="mb-0">Añadir Nuevo Libro o Película</h5>
+        </div>
+        <div class="card-body">
+            <EditForm Model="newItem" OnValidSubmit="HandleValidSubmit">
+                <DataAnnotationsValidator />
+                <ValidationSummary class="text-danger mb-3" />
+
+                <div class="row g-3">
+                    <div class="col-md-4">
+                        <label class="form-label">Título</label>
+                        <InputText @bind-Value="newItem.Title" class="form-control" placeholder="Ej: Inception / El Principito" />
+                    </div>
+                    <div class="col-md-2">
+                        <label class="form-label">Tipo</label>
+                        <InputSelect @bind-Value="newItem.MediaType" class="form-select">
+                            <option value="Movie">Película</option>
+                            <option value="Book">Libro</option>
+                        </InputSelect>
+                    </div>
+                    <div class="col-md-2">
+                        <label class="form-label">Género</label>
+                        <InputText @bind-Value="newItem.Genre" class="form-control" placeholder="Ej: Sci-Fi, Drama" />
+                    </div>
+                    <div class="col-md-2">
+                        <label class="form-label">Estado</label>
+                        <InputSelect @bind-Value="newItem.Status" class="form-select">
+                            <option value="Pending">Pendiente</option>
+                            <option value="Completed">Completado</option>
+                        </InputSelect>
+                    </div>
+                    <div class="col-md-2">
+                        <label class="form-label">Calificación (1-5)</label>
+                        <InputNumber @bind-Value="newItem.Rating" class="form-control" min="1" max="5" />
+                    </div>
+                    <div class="col-md-12">
+                        <label class="form-label">Notas / Reseña</label>
+                        <InputTextArea @bind-Value="newItem.Notes" class="form-control" rows="2" placeholder="Opinión o comentarios breves..." />
+                    </div>
+                </div>
+
+                <div class="mt-3 text-end">
+                    <button type="submit" class="btn btn-success px-4">➕ Guardar en Galería</button>
+                </div>
+            </EditForm>
+        </div>
+    </div>
+
+    <!-- Filtros de búsqueda -->
+    <div class="row mb-3 align-items-center">
+        <div class="col-md-6">
+            <h4>Mi Galería</h4>
+        </div>
+        <div class="col-md-3">
+            <select class="form-select" @onchange="FilterByType">
+                <option value="All">Todos los Tipos</option>
+                <option value="Movie">Películas</option>
+                <option value="Book">Libros</option>
+            </select>
+        </div>
+        <div class="col-md-3">
+            <select class="form-select" @onchange="FilterByStatus">
+                <option value="All">Todos los Estados</option>
+                <option value="Pending">Pendientes</option>
+                <option value="Completed">Completados</option>
+            </select>
+        </div>
+    </div>
+
+    <!-- Grilla de Elementos -->
+    @if (filteredItems == null)
+    {
+        <p><em>Cargando tu colección...</em></p>
+    }
+    else if (!filteredItems.Any())
+    {
+        <div class="alert alert-info text-center">
+            No se encontraron registros. ¡Añade tu primer libro o película arriba!
+        </div>
+    }
+    else
+    {
+        <div class="row row-cols-1 row-cols-md-3 g-4">
+            @foreach (var item in filteredItems)
+            {
+                <div class="col">
+                    <div class="card h-100 shadow-sm border-0">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between align-items-start mb-2">
+                                <span class="badge @(item.MediaType == "Movie" ? "bg-warning text-dark" : "bg-info text-dark")">
+                                    @(item.MediaType == "Movie" ? "🎬 Película" : "📖 Libro")
+                                </span>
+                                <span class="badge @(item.Status == "Completed" ? "bg-success" : "bg-secondary")">
+                                    @(item.Status == "Completed" ? "✓ Completado" : "⏳ Pendiente")
+                                </span>
+                            </div>
+
+                            <h5 class="card-title text-truncate">@item.Title</h5>
+                            <h6 class="card-subtitle mb-2 text-muted">Género: @(string.IsNullOrEmpty(item.Genre) ? "N/A" : item.Genre)</h6>
+                            
+                            <p class="card-text mb-1">
+                                <strong>Calificación:</strong> 
+                                <span class="text-warning">
+                                    @for (int i = 0; i < item.Rating; i++) { <span>★</span> }
+                                    @for (int i = item.Rating; i < 5; i++) { <span class="text-muted">☆</span> }
+                                </span>
+                            </p>
+
+                            @if (!string.IsNullOrEmpty(item.Notes))
+                            {
+                                <p class="card-text text-secondary small"><em>"@item.Notes"</em></p>
+                            }
+                        </div>
+                        <div class="card-footer bg-transparent border-0 d-flex justify-content-between align-items-center">
+                            <button class="btn btn-sm btn-outline-primary" @onclick="() => ToggleStatus(item)">
+                                Cambiar Estado
+                            </button>
+                            <button class="btn btn-sm btn-outline-danger" @onclick="() => DeleteItem(item)">
+                                🗑️ Eliminar
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+</div>
+
+@code {
+    private MediaItem newItem = new();
+    private List<MediaItem>? userItems;
+    private List<MediaItem>? filteredItems;
+    private string currentUserId = string.Empty;
+
+    private string selectedTypeFilter = "All";
+    private string selectedStatusFilter = "All";
+
+    protected override async Task OnInitializedAsync()
+    {
+        var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+        var user = authState.User;
+
+        if (user.Identity?.IsAuthenticated == true)
+        {
+            currentUserId = user.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value ?? string.Empty;
+            await LoadData();
+        }
+    }
+
+    private async Task LoadData()
+    {
+        userItems = await DbContext.MediaItems
+            .Where(m => m.UserId == currentUserId)
+            .OrderByDescending(m => m.CreatedAt)
+            .ToListAsync();
+
+        ApplyFilters();
+    }
+
+    private async Task HandleValidSubmit()
+    {
+        newItem.UserId = currentUserId;
+        newItem.CreatedAt = DateTime.UtcNow;
+
+        DbContext.MediaItems.Add(newItem);
+        await DbContext.SaveChangesAsync();
+
+        newItem = new MediaItem(); // Limpiar formulario
+        await LoadData();
+    }
+
+    private async Task ToggleStatus(MediaItem item)
+    {
+        item.Status = item.Status == "Completed" ? "Pending" : "Completed";
+        DbContext.MediaItems.Update(item);
+        await DbContext.SaveChangesAsync();
+        await LoadData();
+    }
+
+    private async Task DeleteItem(MediaItem item)
+    {
+        DbContext.MediaItems.Remove(item);
+        await DbContext.SaveChangesAsync();
+        await LoadData();
+    }
+
+    private void FilterByType(ChangeEventArgs e)
+    {
+        selectedTypeFilter = e.Value?.ToString() ?? "All";
+        ApplyFilters();
+    }
+
+    private void FilterByStatus(ChangeEventArgs e)
+    {
+        selectedStatusFilter = e.Value?.ToString() ?? "All";
+        ApplyFilters();
+    }
+
+    private void ApplyFilters()
+    {
+        if (userItems == null) return;
+
+        filteredItems = userItems.Where(item =>
+            (selectedTypeFilter == "All" || item.MediaType == selectedTypeFilter) &&
+            (selectedStatusFilter == "All" || item.Status == selectedStatusFilter)
+        ).ToList();
+    }
+}
