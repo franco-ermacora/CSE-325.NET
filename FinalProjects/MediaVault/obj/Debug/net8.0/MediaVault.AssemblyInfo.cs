@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("MediaVault")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+ab86df0933f3bc23e22e1c51f4a51504b1650d22")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+06364cb4251a095280ef606d409670d0c603a158")]
 [assembly: System.Reflection.AssemblyProductAttribute("MediaVault")]
 [assembly: System.Reflection.AssemblyTitleAttribute("MediaVault")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

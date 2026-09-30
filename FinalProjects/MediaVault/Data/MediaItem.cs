@@ -26,8 +26,7 @@ public class MediaItem
 
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
-    // Relación con el usuario autenticado
-    [Required]
+    // Relación con el usuario (sin [Required] para evitar bloqueos en el cliente)
     public string UserId { get; set; } = string.Empty;
 
     [ForeignKey("UserId")]
