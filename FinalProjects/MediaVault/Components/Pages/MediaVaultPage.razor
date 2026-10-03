@@ -10,54 +10,63 @@
 
 <PageTitle>Media Vault - Mis Libros y Películas</PageTitle>
 
-<div class="container mt-4">
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <h2>📚 Media Vault</h2>
+<main class="container mt-4" id="main-content">
+    <header class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="h2 mb-0">📚 Media Vault</h1>
         <span class="badge bg-primary fs-6">Colección Personal</span>
-    </div>
+    </header>
 
-    <!-- W04-02 & W04-03: Formulario Único para Crear y Editar -->
-    <div class="card mb-4 shadow-sm">
+    <!-- W05-04: Alerta de Éxito / Feedback Visual Temporizado -->
+    @if (!string.IsNullOrEmpty(successMessage))
+    {
+        <div class="alert alert-success alert-dismissible fade show shadow-sm" role="alert">
+            <span>✅ @successMessage</span>
+            <button type="button" class="btn-close" @onclick="() => successMessage = string.Empty" aria-label="Cerrar mensaje"></button>
+        </div>
+    }
+
+    <!-- W05-01 & W05-03: Formulario con Accesibilidad WAG / <label> vinculados -->
+    <section class="card mb-4 shadow-sm border-0">
         <div class="card-header @(isEditing ? "bg-warning text-dark" : "bg-dark text-white")">
-            <h5 class="mb-0">
+            <h2 class="h5 mb-0">
                 @(isEditing ? "✏️ Editar Libro o Película" : "➕ Añadir Nuevo Libro o Película")
-            </h5>
+            </h2>
         </div>
         <div class="card-body">
             <EditForm Model="currentItem" OnValidSubmit="HandleValidSubmit" FormName="MediaItemForm">
                 <DataAnnotationsValidator />
-                <ValidationSummary class="text-danger mb-3" />
+                <ValidationSummary class="text-danger mb-3" role="alert" />
 
                 <div class="row g-3">
                     <div class="col-md-4">
-                        <label class="form-label font-weight-bold">Título</label>
-                        <InputText @bind-Value="currentItem.Title" class="form-control" placeholder="Ej: Inception / El Principito" />
+                        <label for="titleInput" class="form-label fw-bold">Título *</label>
+                        <InputText id="titleInput" @bind-Value="currentItem.Title" class="form-control" placeholder="Ej: Inception / El Principito" aria-required="true" />
                     </div>
                     <div class="col-md-2">
-                        <label class="form-label font-weight-bold">Tipo</label>
-                        <InputSelect @bind-Value="currentItem.MediaType" class="form-select">
+                        <label for="typeSelect" class="form-label fw-bold">Tipo</label>
+                        <InputSelect id="typeSelect" @bind-Value="currentItem.MediaType" class="form-select">
                             <option value="Movie">Película</option>
                             <option value="Book">Libro</option>
                         </InputSelect>
                     </div>
                     <div class="col-md-2">
-                        <label class="form-label font-weight-bold">Género</label>
-                        <InputText @bind-Value="currentItem.Genre" class="form-control" placeholder="Ej: Sci-Fi, Drama" />
+                        <label for="genreInput" class="form-label fw-bold">Género</label>
+                        <InputText id="genreInput" @bind-Value="currentItem.Genre" class="form-control" placeholder="Ej: Sci-Fi, Drama" />
                     </div>
                     <div class="col-md-2">
-                        <label class="form-label font-weight-bold">Estado</label>
-                        <InputSelect @bind-Value="currentItem.Status" class="form-select">
+                        <label for="statusSelect" class="form-label fw-bold">Estado</label>
+                        <InputSelect id="statusSelect" @bind-Value="currentItem.Status" class="form-select">
                             <option value="Pending">Pendiente</option>
                             <option value="Completed">Completado</option>
                         </InputSelect>
                     </div>
                     <div class="col-md-2">
-                        <label class="form-label font-weight-bold">Calificación (1-5)</label>
-                        <InputNumber @bind-Value="currentItem.Rating" class="form-control" min="1" max="5" />
+                        <label for="ratingInput" class="form-label fw-bold">Calificación (1-5)</label>
+                        <InputNumber id="ratingInput" @bind-Value="currentItem.Rating" class="form-control" min="1" max="5" />
                     </div>
                     <div class="col-md-12">
-                        <label class="form-label font-weight-bold">Notas / Reseña</label>
-                        <InputTextArea @bind-Value="currentItem.Notes" class="form-control" rows="2" placeholder="Opinión o comentarios breves..." />
+                        <label for="notesInput" class="form-label fw-bold">Notas / Reseña</label>
+                        <InputTextArea id="notesInput" @bind-Value="currentItem.Notes" class="form-control" rows="2" placeholder="Opinión o comentarios breves..." />
                     </div>
                 </div>
 
@@ -65,56 +74,65 @@
                     @if (isEditing)
                     {
                         <button type="button" class="btn btn-secondary me-2" @onclick="CancelEdit">Cancelar</button>
-                        <button type="submit" class="btn btn-warning px-4">💾 Guardar Cambios</button>
+                        <button type="submit" class="btn btn-warning px-4 fw-bold">💾 Guardar Cambios</button>
                     }
                     else
                     {
-                        <button type="submit" class="btn btn-success px-4">➕ Guardar en Galería</button>
+                        <button type="submit" class="btn btn-success px-4 fw-bold">➕ Guardar en Galería</button>
                     }
                 </div>
             </EditForm>
         </div>
-    </div>
+    </section>
 
-    <!-- W04-01: Filtros y Dashboard -->
-    <div class="row mb-3 align-items-center">
+    <!-- W05-01: Filtros de Búsqueda -->
+    <section class="row mb-3 align-items-center">
         <div class="col-md-6">
-            <h4>Mi Galería</h4>
+            <h2 class="h4">Mi Galería</h2>
         </div>
-        <div class="col-md-3">
-            <select class="form-select" @onchange="FilterByType">
+        <div class="col-md-3 col-6 mb-2 mb-md-0">
+            <label for="filterType" class="visually-hidden">Filtrar por Tipo</label>
+            <select id="filterType" class="form-select" @onchange="FilterByType" aria-label="Filtrar por Tipo">
                 <option value="All">Todos los Tipos</option>
                 <option value="Movie">Películas</option>
                 <option value="Book">Libros</option>
             </select>
         </div>
-        <div class="col-md-3">
-            <select class="form-select" @onchange="FilterByStatus">
+        <div class="col-md-3 col-6 mb-2 mb-md-0">
+            <label for="filterStatus" class="visually-hidden">Filtrar por Estado</label>
+            <select id="filterStatus" class="form-select" @onchange="FilterByStatus" aria-label="Filtrar por Estado">
                 <option value="All">Todos los Estados</option>
                 <option value="Pending">Pendientes</option>
                 <option value="Completed">Completados</option>
             </select>
         </div>
-    </div>
+    </section>
 
-    <!-- W04-01: Grilla con registros solo del usuario logueado -->
-    @if (filteredItems == null)
+    <!-- W05-04: Loading States / Spinner de carga -->
+    @if (isLoading)
     {
-        <p><em>Cargando tu colección...</em></p>
+        <div class="spinner-container" aria-live="polite">
+            <div class="spinner-border text-primary" role="status" style="width: 3rem; height: 3rem;">
+                <span class="visually-hidden">Cargando colección...</span>
+            </div>
+        </div>
     }
-    else if (!filteredItems.Any())
+    else if (filteredItems == null || !filteredItems.Any())
     {
-        <div class="alert alert-info text-center">
-            No se encontraron registros. ¡Añade tu primer libro o película arriba!
+        <!-- W05-04: Empty Database / Feedback estado vacío -->
+        <div class="alert alert-info text-center p-4 shadow-sm rounded border-0" role="status">
+            <h5>📭 Tu colección está vacía</h5>
+            <p class="mb-0 text-muted">No se encontraron registros que coincidan con tus filtros. ¡Añade tu primer libro o película arriba!</p>
         </div>
     }
     else
     {
-        <div class="row row-cols-1 row-cols-md-3 g-4">
+        <!-- W05-02: Responsive Grid -->
+        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-4">
             @foreach (var item in filteredItems)
             {
                 <div class="col">
-                    <div class="card h-100 shadow-sm border-0">
+                    <article class="card h-100 shadow-sm border-0">
                         <div class="card-body">
                             <div class="d-flex justify-content-between align-items-start mb-2">
                                 <span class="badge @(item.MediaType == "Movie" ? "bg-warning text-dark" : "bg-info text-dark")">
@@ -125,51 +143,51 @@
                                 </span>
                             </div>
 
-                            <h5 class="card-title text-truncate">@item.Title</h5>
-                            <h6 class="card-subtitle mb-2 text-muted">Género: @(string.IsNullOrEmpty(item.Genre) ? "N/A" : item.Genre)</h6>
+                            <h3 class="h5 card-title text-truncate mb-1">@item.Title</h3>
+                            <p class="card-subtitle mb-2 text-muted small">Género: @(string.IsNullOrEmpty(item.Genre) ? "N/A" : item.Genre)</p>
                             
-                            <p class="card-text mb-1">
-                                <strong>Calificación:</strong> 
-                                <span class="text-warning">
-                                    @for (int i = 0; i < item.Rating; i++) { <span>★</span> }
-                                    @for (int i = item.Rating; i < 5; i++) { <span class="text-muted">☆</span> }
+                            <p class="card-text mb-2">
+                                <span class="fw-bold">Calificación:</span> 
+                                <span class="text-warning" aria-label="Calificación @item.Rating de 5 estrellas">
+                                    @for (int i = 0; i < item.Rating; i++) { <span aria-hidden="true">★</span> }
+                                    @for (int i = item.Rating; i < 5; i++) { <span class="text-muted" aria-hidden="true">☆</span> }
                                 </span>
                             </p>
 
                             @if (!string.IsNullOrEmpty(item.Notes))
                             {
-                                <p class="card-text text-secondary small"><em>"@item.Notes"</em></p>
+                                <p class="card-text text-secondary small fst-italic">"@item.Notes"</p>
                             }
                         </div>
                         <div class="card-footer bg-transparent border-0 d-flex justify-content-between align-items-center">
                             <div>
-                                <button type="button" class="btn btn-sm btn-outline-warning me-1" @onclick="() => EditItem(item)">
-                                    ✏️ Editar
+                                <button type="button" class="btn btn-sm btn-outline-warning me-1" @onclick="() => EditItem(item)" aria-label="Editar @item.Title">
+                                    ✏️
                                 </button>
                                 <button type="button" class="btn btn-sm btn-outline-primary" @onclick="() => ToggleStatus(item)">
-                                    @(item.Status == "Completed" ? "⏳ Reabrir" : "✓ Marcar Completado")
+                                    @(item.Status == "Completed" ? "⏳ Reabrir" : "✓ Completar")
                                 </button>
                             </div>
-                            <button type="button" class="btn btn-sm btn-outline-danger" @onclick="() => PromptDelete(item)">
-                                🗑️ Eliminar
+                            <button type="button" class="btn btn-sm btn-outline-danger" @onclick="() => PromptDelete(item)" aria-label="Eliminar @item.Title">
+                                🗑️
                             </button>
                         </div>
-                    </div>
+                    </article>
                 </div>
             }
         </div>
     }
-</div>
+</main>
 
-<!-- W04-04: Modal de Confirmación de Eliminación -->
+<!-- W04 & W05: Modal Accesible -->
 @if (itemToDelete != null)
 {
-    <div class="modal fade show d-block" tabindex="-1" style="background-color: rgba(0,0,0,0.5);">
+    <div class="modal fade show d-block" tabindex="-1" role="dialog" aria-labelledby="modalTitle" aria-modal="true" style="background-color: rgba(0,0,0,0.5);">
         <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
+            <div class="modal-content border-0 shadow">
                 <div class="modal-header bg-danger text-white">
-                    <h5 class="modal-title">Confirmar Eliminación</h5>
-                    <button type="button" class="btn-close btn-close-white" @onclick="CancelDelete"></button>
+                    <h5 class="modal-title" id="modalTitle">Confirmar Eliminación</h5>
+                    <button type="button" class="btn-close btn-close-white" @onclick="CancelDelete" aria-label="Cerrar"></button>
                 </div>
                 <div class="modal-body">
                     <p>¿Estás seguro de que deseas eliminar <strong>"@itemToDelete.Title"</strong> de tu colección?</p>
@@ -191,6 +209,8 @@
     private List<MediaItem>? filteredItems;
     private string currentUserId = string.Empty;
     private bool isEditing = false;
+    private bool isLoading = true;
+    private string successMessage = string.Empty;
 
     private string selectedTypeFilter = "All";
     private string selectedStatusFilter = "All";
@@ -205,16 +225,24 @@
             currentUserId = user.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value ?? string.Empty;
             await LoadData();
         }
+        else
+        {
+            isLoading = false;
+        }
     }
 
     private async Task LoadData()
     {
+        isLoading = true;
+        await Task.Delay(300); // Pequeño delay para visualización suave del spinner
+
         userItems = await DbContext.MediaItems
             .Where(m => m.UserId == currentUserId)
             .OrderByDescending(m => m.CreatedAt)
             .ToListAsync();
 
         ApplyFilters();
+        isLoading = false;
     }
 
     private async Task HandleValidSubmit()
@@ -223,7 +251,6 @@
 
         if (isEditing)
         {
-            // Búsqueda del elemento existente en la BD para modificarlo limpiamente
             var existingItem = await DbContext.MediaItems.FindAsync(currentItem.Id);
             if (existingItem != null && existingItem.UserId == currentUserId)
             {
@@ -235,6 +262,7 @@
                 existingItem.Notes = currentItem.Notes;
 
                 await DbContext.SaveChangesAsync();
+                successMessage = $"'{currentItem.Title}' actualizado correctamente.";
             }
             isEditing = false;
         }
@@ -245,6 +273,7 @@
 
             DbContext.MediaItems.Add(currentItem);
             await DbContext.SaveChangesAsync();
+            successMessage = $"'{currentItem.Title}' añadido a tu galería.";
         }
 
         currentItem = new MediaItem();
@@ -266,6 +295,7 @@
             UserId = item.UserId
         };
         isEditing = true;
+        successMessage = string.Empty;
     }
 
     private void CancelEdit()
@@ -281,6 +311,7 @@
         {
             existingItem.Status = existingItem.Status == "Completed" ? "Pending" : "Completed";
             await DbContext.SaveChangesAsync();
+            successMessage = $"Estado de '{item.Title}' actualizado.";
             await LoadData();
         }
     }
@@ -304,6 +335,7 @@
             {
                 DbContext.MediaItems.Remove(existingItem);
                 await DbContext.SaveChangesAsync();
+                successMessage = $"'{itemToDelete.Title}' fue eliminado de tu colección.";
             }
             itemToDelete = null;
             await LoadData();
