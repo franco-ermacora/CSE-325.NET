@@ -140,3 +140,5 @@
 /home/franco/Documentos/CSE325-NET-Development/FinalProjects/MediaVault/obj/Debug/net8.0/MediaVault.pdb
 /home/franco/Documentos/CSE325-NET-Development/FinalProjects/MediaVault/obj/Debug/net8.0/MediaVault.genruntimeconfig.cache
 /home/franco/Documentos/CSE325-NET-Development/FinalProjects/MediaVault/obj/Debug/net8.0/ref/MediaVault.dll
+/home/franco/Documentos/CSE325-NET-Development/FinalProjects/MediaVault/bin/Debug/net8.0/Microsoft.AspNetCore.Authentication.Google.dll
+/home/franco/Documentos/CSE325-NET-Development/FinalProjects/MediaVault/bin/Debug/net8.0/AspNet.Security.OAuth.GitHub.dll

@@ -1,10 +1,12 @@
 {
   "version": 2,
-  "dgSpecHash": "VtTjyHIAxJTu6KrJH/l4HbojStw3nGDkT1+/s6+ih330KPQKQSa+40uDJ1gqjG0p3Js8/8ochJcCMhbGUzQJNg==",
+  "dgSpecHash": "mnpaIXzccm9/mN2ZF1S/rmHQGk68J3vjCWRyZ35R/B5/MYfVhRL4crZ/k1mco8KSczikjNDimcrS8Qt9hDgWxA==",
   "success": true,
   "projectFilePath": "/home/franco/Documentos/CSE325-NET-Development/FinalProjects/MediaVault/MediaVault.csproj",
   "expectedPackageFiles": [
+    "/home/franco/.nuget/packages/aspnet.security.oauth.github/8.0.0/aspnet.security.oauth.github.8.0.0.nupkg.sha512",
     "/home/franco/.nuget/packages/humanizer.core/2.14.1/humanizer.core.2.14.1.nupkg.sha512",
+    "/home/franco/.nuget/packages/microsoft.aspnetcore.authentication.google/8.0.0/microsoft.aspnetcore.authentication.google.8.0.0.nupkg.sha512",
     "/home/franco/.nuget/packages/microsoft.aspnetcore.cryptography.internal/8.0.31/microsoft.aspnetcore.cryptography.internal.8.0.31.nupkg.sha512",
     "/home/franco/.nuget/packages/microsoft.aspnetcore.cryptography.keyderivation/8.0.31/microsoft.aspnetcore.cryptography.keyderivation.8.0.31.nupkg.sha512",
     "/home/franco/.nuget/packages/microsoft.aspnetcore.diagnostics.entityframeworkcore/8.0.31/microsoft.aspnetcore.diagnostics.entityframeworkcore.8.0.31.nupkg.sha512",
